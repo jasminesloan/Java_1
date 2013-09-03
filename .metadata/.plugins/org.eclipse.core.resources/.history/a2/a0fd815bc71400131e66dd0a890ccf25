@@ -1,0 +1,58 @@
+package com.jasminesloan.packages;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class JSON {
+	
+	public static JSONObject buildJSON() {
+
+		JSONObject jsonObject = new JSONObject();
+
+		try {
+			
+			JSONObject object = new JSONObject();
+
+			for (Info laptops : Info.values()) {
+
+				JSONObject newObject = new JSONObject();
+
+				newObject.put("screenSize", laptops.setScreenSize());
+				newObject.put("price", laptops.setPrice());
+				newObject.put("processor", laptops.setProcessor());
+				object.put(laptops.name().toString(), newObject);
+			}
+
+			object.put("query", object);
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonObject;
+	}
+
+	public static String readJSON(String selected) {
+
+		String results, screenSize, price, processor;
+		JSONObject infoObject = buildJSON();
+
+		try {
+			screenSize = infoObject.getJSONObject("query").getJSONObject(selected).getString("screenSize");
+			price = infoObject.getJSONObject("query").getJSONObject(selected).getString("price");
+			processor = infoObject.getJSONObject("query").getJSONObject(selected).getString("procesor");
+
+			results = "Screen Size: " + screenSize + "\r\n"
+					+ "Price: " + price + "\r\n"
+					+ "Processor: " + processor;
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			results = e.toString();
+		}
+
+		return results;
+	}
+}

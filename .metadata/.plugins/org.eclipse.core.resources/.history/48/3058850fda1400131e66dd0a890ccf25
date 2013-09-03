@@ -1,0 +1,42 @@
+package com.jasminesloan.packages;
+
+public enum Info {
+	
+	MAC("11 inch", "$999", "1.3GHz dual-core Intel Core i5", "128GB"),
+	MACBOOKAIR("11 inch", "$1199", "1.3GHz dual-core Intel Core i5", "256GB"),
+	MACBOOKPRO("13 inch", "$1099", "1.3GHz dual-core Intel Core i5", "128GB"),
+	IPAD("13 inch", "$1299", "1.3GHz dual-core Intel Core i5", "256GB"),
+	MINI("13 inch", "$1199", "2.5GHz dual-core Intel Core i5", "500GB"),
+	IPOD("13 inch", "$1499", "2.9GHz dual-core Intel Core i7", "750GB"),
+	IPHONE("15 inch", "$1799", "2.3GHz dual-core Intel Core i7", "128GB"),
+	MACBOOKPRO152("15 inch", "$2199", "2.4GHz dual-core Intel Core i7", "256GB");
+	
+	private final String screenSize;
+	private final String price;
+	private final String processor;
+	private final String storage; 
+	
+	private Info(String screenSize, String price, String processor, String storage){
+		this.screenSize = screenSize;
+		this.price = price;
+		this.processor = processor;
+		this.storage = storage;
+	}
+	
+	public String setScreenSize(){
+		return screenSize;
+	}
+	
+	public String setPrice(){
+		return price;
+	}
+	
+	public String setProcessor(){
+		return processor;
+	}
+	
+	public String setStorage(){
+		return storage;
+	}
+	
+}

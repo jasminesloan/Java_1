@@ -522,3 +522,6 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at jar:file:
 !MESSAGE Cannot complete the request.  See the error log for details.
 !SUBENTRY 1 org.eclipse.equinox.p2.operations 2 10005 2013-09-03 12:04:41.330
 !MESSAGE "JAutodoc" will be ignored because it is already installed.
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-09-03 12:58:36.579
+!MESSAGE Failed to load properties file for project 'Week2_Java'
