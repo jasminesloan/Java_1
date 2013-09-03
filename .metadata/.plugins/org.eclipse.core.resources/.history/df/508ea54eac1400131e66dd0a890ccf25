@@ -1,0 +1,212 @@
+package com.jasminesloan.week1_java;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.text.InputType;
+import android.view.Menu;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class MainActivity extends Activity {
+
+	LinearLayout layout;
+	LinearLayout.LayoutParams params;
+	TextView totals;
+	TextView airTotal;
+	TextView proTotal;
+	EditText airEditText;
+	EditText proEditText;
+	boolean totalButton = true;
+	int airResult;
+	int proResult;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        //Sets Layout
+        layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        
+        //Sets width and height
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(params);
+        
+        //Sets information for the user
+        TextView textView = new TextView(this);
+        textView.setText("How much for a new Apple Laptop " + getString(R.string.MacBookAir) + " and " 
+        																+ getString(R.string.MacBookPro) + ".");
+        textView.setTextSize(20.0f);
+        textView.setTextColor(Color.BLACK);
+        layout.addView(textView);
+        
+        //EditText 
+        airEditText = new EditText(this);
+        airEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        airEditText.setHint("Enter Amount of MacBook Air's");
+        
+        //Air Button
+        Button airButton = new Button(this);
+        airButton.setText("Air Total");
+        airButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {				
+				
+				if (totalButton){
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(airEditText.getWindowToken(), 0);
+				}else{
+					airTotal.setText("code error");
+				}
+
+				int air = getResources().getInteger(R.integer.MacBookAir);
+
+				//For Loop for amounts
+				try {
+					for (int i = 0; i < air; i++){
+
+						int entry = Integer.parseInt(airEditText.getText().toString());
+
+						airResult = (1*air)*entry;
+						
+						airTotal.setText("Total for MacBook Air: " + "$" + airResult + ".00");
+						airTotal.setTextSize(15.0f); 
+						airTotal.setTextColor(Color.RED);
+					}
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+        
+        LinearLayout ps3Form = new LinearLayout(this);
+        ps3Form.setOrientation(LinearLayout.VERTICAL);
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ps3Form.setLayoutParams(params);
+        
+        //Adds Button and Text to View
+        ps3Form.addView(airEditText);
+        ps3Form.addView(airButton);
+        
+        layout.addView(ps3Form);
+        
+        
+        //EditText where user enters amount of total games purchased
+        proEditText = new EditText(this);
+        proEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        proEditText.setHint("Enter Amount of XBOX Games Bought");
+        
+        //Button to gather total amount spent on new XBOX games
+        Button xboxbtn = new Button(this);
+        xboxbtn.setText("Get 360 Total");
+        xboxbtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {				
+				
+				if (totalButton){
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(airEditText.getWindowToken(), 0);
+				}else{
+					proTotal.setText("code error");
+				}
+
+
+				int pro = getResources().getInteger(R.integer.MacbookPro);
+
+				//For Loop for amounts
+				try {
+					for (int i = 0; i < pro; i++){
+
+						int entry = Integer.parseInt(proEditText.getText().toString());
+
+						proResult = (1*pro)*entry;
+						
+						proTotal.setText("Total for MacBook Pro: " + "$" + proResult + ".00");
+						proTotal.setTextSize(15.0f); //Text Size
+						proTotal.setTextColor(Color.RED);//Text Color
+					}
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+        
+        LinearLayout xboxForm = new LinearLayout(this);
+        xboxForm.setOrientation(LinearLayout.VERTICAL);
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        xboxForm.setLayoutParams(params);
+        
+        //Adds Text and Button to View
+        xboxForm.addView(proEditText);
+        xboxForm.addView(xboxbtn);
+        
+        layout.addView(xboxForm); 
+        
+        //total
+        Button totalsBtn = new Button(this);
+        totalsBtn.setText("Get Combined Total");
+        totalsBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				gatherTotals();
+
+			}
+		});
+        
+        LinearLayout totalsForm = new LinearLayout(this);
+        totalsForm.setOrientation(LinearLayout.VERTICAL);
+        params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        totalsForm.setLayoutParams(params);
+        
+        totalsForm.addView(totalsBtn);
+        
+        layout.addView(totalsForm); 
+        
+        //Air Display
+        airTotal = new TextView(this);
+        layout.addView(airTotal);
+        
+        //Pro Display
+        proTotal = new TextView(this);
+        layout.addView(proTotal);
+        
+        //Displays Totals Result
+        totals = new TextView(this);
+        layout.addView(totals);
+
+        //adds all content to View
+        setContentView(layout);
+    }
+    
+    //*****FUNCTION FOR GATHERING TOTALS*****
+    public void gatherTotals(){
+    	boolean combinedTotal = true;
+
+    	if (combinedTotal){
+    		totals.setText("Your total is: " + "$" + (airResult + proResult) + ".00");
+    		totals.setTextSize(15.0f); 
+    		totals.setTextColor(Color.RED);
+    	}else{
+    		System.out.println("The programmer who coded this app messed up.");
+    	}
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+}
