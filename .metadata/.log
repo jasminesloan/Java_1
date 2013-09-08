@@ -525,3 +525,16 @@ org.eclipse.equinox.p2.core.ProvisionException: No repository found at jar:file:
 
 !ENTRY com.android.ide.eclipse.adt 4 0 2013-09-03 12:58:36.579
 !MESSAGE Failed to load properties file for project 'Week2_Java'
+!SESSION 2013-09-04 08:47:29.771 -----------------------------------------------
+eclipse.buildId=v22.0.1-685705
+java.version=1.6.0_51
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=en_US
+Framework arguments:  -product com.android.ide.eclipse.adt.package.product -keyring /Users/Jasmine/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product com.android.ide.eclipse.adt.package.product -keyring /Users/Jasmine/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-09-04 08:48:04.259
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2013-09-04 09:50:09.263
+!MESSAGE Failed to load properties file for project 'Week3_Java'
