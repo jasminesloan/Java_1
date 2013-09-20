@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 		_history = getHistory();
 		_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		
-		_getForm = new Form(_context, "", "Last Name", "Joke", "Random");
+		_getForm = new Form(_context, "First Name", "Last Name", "Joke", "Random");
 		
 		_viewText = new TextView(_context);
 		_viewText.setText("First Name");

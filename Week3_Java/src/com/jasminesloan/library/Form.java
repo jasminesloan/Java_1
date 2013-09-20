@@ -21,18 +21,23 @@ public class Form extends LinearLayout{
 		
 		params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		
+		// Name Field
 		_firstName = new EditText(context);
 		paramsTwo = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,1.0f);
 		_firstName.setHint(hintString);
 		
+		// Name Field
 		_lastName = new EditText(context);
 		_lastName.setHint(hintTwo);
 		
+		// Joke Button
 		_getButton = new Button(context);
 		_getButton.setText(buttonTextButton);
 		
+		// Random Button
 		_randomButton = new Button(context);
 		_randomButton.setText(randomTextButton);
+		
 		
 		_layout = new LinearLayout(context);
 		_layout.setLayoutParams(params);

@@ -55,15 +55,15 @@ public class MainActivity extends Activity {
 		_history = getHistory();
 		_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		
-		_getForm = new Form(_context, "", "Last Name", "Joke", "Random");
+		_getForm = new Form(_context, "First Name", "Last Name", "Joke", "Random");
 		
 		_viewText = new TextView(_context);
 		_viewText.setText("First Name");
 		_viewText.setLayoutParams(_params);
 		
 		//Name Field
-		//EditText name = _getForm.getFirstName();
-		//name.setLayoutParams(_params);
+		EditText name = _getForm.getFirstName();
+		name.setLayoutParams(_params);
 		
 		Button getButton = _getForm.getButton();
 		getButton.setLayoutParams(_params);
