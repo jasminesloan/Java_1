@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Week3_Java</string>
+    <string name="app_name">Jokes</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+	<string name="get_joke">Get Jokes</string>
+	<string name="get_first_name">First Name</string>
+	<string name="get_random">Get Random</string>
+    <string name="header_text">Choose A Button</string>
+    <string name="joke">Joke:</string>
+    <string name="save_to_favorites">Show History</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="image">image</string>
 </resources>

@@ -40,6 +40,7 @@ public class Form extends LinearLayout{
 		
 		
 		_layout = new LinearLayout(context);
+		_layout.addView(_firstName);
 		_layout.setLayoutParams(params);
 		this.addView(_layout);
 		this.addView(_getButton);

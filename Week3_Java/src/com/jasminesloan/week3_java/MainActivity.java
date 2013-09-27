@@ -2,10 +2,12 @@ package com.jasminesloan.week3_java;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.jasminesloan.library.JSON;
+import com.jasminesloan.library.Network;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,153 +15,133 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.jasminesloan.library.Form;
-import com.jasminesloan.library.Display;
-import com.jasminesloan.library.JSON;
-import com.jasminesloan.library.Network;
+
 
 
 
 public class MainActivity extends Activity {
 
 	Context _context;
-	LinearLayout _mainLayout;
-	Form _getForm;
-	Display _display;
 	Boolean _isConnected = false;
-	HashMap<String, String> _history;
-	LayoutParams _params;
+	ArrayList<String> _history;
 	GridLayout _layoutGrid;
-	TextView _viewText;
-	String _stringFormat;
-	String _StringId;
-	String data;
+	TextView _header;
+	TextView _nameField;
+	TextView _joke;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		setContentView(R.layout.form);
 		_context = this;
-		_mainLayout = new LinearLayout(_context);
 		_history = getHistory();
-		_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		
-		_getForm = new Form(_context, "", "Last Name", "Joke", "Random");
 		
-		_viewText = new TextView(_context);
-		_viewText.setText("First Name");
-		_viewText.setLayoutParams(_params);
+		_nameField = (EditText) findViewById(R.id._firstName);
 		
-		//Name Field
-		//EditText name = _getForm.getFirstName();
-		//name.setLayoutParams(_params);
-		
-		Button getButton = _getForm.getButton();
-		getButton.setLayoutParams(_params);
-		getButton.setOnClickListener(new OnClickListener() {
-			
+		Button getButton = (Button) findViewById(R.id._getButton);
+		 getButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				getJoke(_getForm.getFirstName().getText().toString(), _getForm.getLastName().getText().toString());
-				
+
+				netConnect();
+				if (_isConnected) {
+
+					if (_nameField.length()!= 0) {
+						getJoke(_nameField.getText().toString());
+
+						// DISMISSES KEYBOARD on CLICK 
+						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(_nameField.getWindowToken(), 0);	
+
+
+					} else {
+						// ALERTS USER TO INPUT A VALUE 	
+						Toast alertToast = Toast.makeText(_context, "Please Enter A Name", Toast.LENGTH_SHORT);	
+						alertToast.show();
+
+						}
+				} 
 			}
-		});
+
+		 });
 		
-		Button random = _getForm.getRandomButton();
-		random.setLayoutParams(_params);
+		Button random = (Button)findViewById(R.id._getRandom);
 		random.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				getRandom();
-				
+				netConnect();
+				if (_isConnected){
+					getRandom();
+				};
 			}
-
 		});
 		
-		Button save = new Button(_context);
-		save.setText("Save?");
-		save.setLayoutParams(_params);
-		
+		Button save = (Button)findViewById(R.id._history);		
 		save.setOnClickListener(new OnClickListener() {
 			
-			@Override
 			public void onClick(View v) {
-				saveForm();
+				Intent intent = new Intent(v.getContext(),ArrayHistory.class);
+				startActivityForResult(intent, 0);
 			}
 		});
-		
-		Button getData = new Button(_context);
-		getData.setText("Get Saved Data?");
-		getData.setLayoutParams(_params);
-		
-		getData.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				getData();
-				
-			}
-		});
-		
-		_isConnected = Network.getConnectionStatus(_context);
-		if(_isConnected){
-			Log.i("Network Connection", Network.getConnectionType(_context));
-		}else{
-			getButton.setClickable(false);
-			random.setClickable(false);
-			
-			AlertDialog.Builder alert = new AlertDialog.Builder(_context);
-			alert.setTitle("");
-			alert.setMessage("Try Again");
-			alert.setCancelable(false);
-			alert.setPositiveButton("", new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialogInterface, int i) {
-					dialogInterface.cancel();
-					}
-			});
-			
-			alert.show();
-		}
-		
-		_display = new Display(_context);
-		_mainLayout.addView(_viewText);
-		_mainLayout.addView(_getForm);
-		_mainLayout.addView(_display);
-		_mainLayout.addView(save);
-		_mainLayout.setOrientation(LinearLayout.VERTICAL);
-		setContentView(_mainLayout);
+
 	}
+	
+	private void netConnect(){
+
+		 _isConnected = Network.getConnectionStatus(_context);
+		 if (_isConnected) {
+			Log.i("NETWORK CONNECTION", Network.getConnectionType(_context));
+			} else{
+
+				// AlertDialog if not connected
+		       AlertDialog.Builder alert = new AlertDialog.Builder(_context);
+		       alert.setTitle("Error!");
+		       alert.setMessage("Network Error");
+		       alert.setCancelable(false);
+		       alert.setPositiveButton("", new DialogInterface.OnClickListener() {
+		           @Override
+		           public void onClick(DialogInterface dialogInterface, int i) {
+		               dialogInterface.cancel();
+		           }
+		       });
+		       alert.show();
+
+			}		 
+		}
+
 
 	@SuppressWarnings("unchecked")
-	private HashMap<String, String> getHistory() {
-		Object stored = JSON.readStringObject(_context, "history", false);
-		HashMap<String, String> history;
-		if (stored == null){
-			Log.i("History", "No History File Found");
-			history = new HashMap<String, String>();
-		}else{
-			history = (HashMap<String, String>) stored;
+	private ArrayList<String> getHistory (){
+		Object stored = JSON.readStringObject(_context, "historyArray", false);
+		ArrayList<String> history;
+		if (stored == null) {
+			Log.i("HISTORY", "NO HISTORY FILE FOUND");
+			history = new ArrayList<String>();
+		} else {
+			history = (ArrayList<String>) stored;
 		}
 		return history;
 	}
 	
-	private void getJoke(String firstName, String lastName) {
+	private void getJoke(String firstName) {
 		String baseURL = "http://api.icndb.com/jokes/random";
-		String nameQuery = "?firstName="+firstName+"&amp;lastName="+lastName+"";
+		String nameQuery = "?firstName="+firstName+"&amp;lastName=";
 		
 		URL finalURL;
 		try {
@@ -204,8 +186,11 @@ public class MainActivity extends Activity {
 				JSONObject results = json.getJSONObject("value");
 				String data = results.getString("joke");
 				String _stringFormat = data.replaceAll("&quot;", "''");
-				String _stringId = results.getString("id");
-				_display.setGridLayout(_stringFormat);
+				_joke = (TextView)findViewById(R.id.joke);
+				_joke.setText(_stringFormat);
+				_history.add(_stringFormat);
+				JSON.storeObjectFile(_context, "historyArray", _history, false);
+				Log.i("ARRAYLIST WRITTEN", _history.toString());
 				
 			}catch (JSONException e){
 				Log.e("JSON Error", e.toString());
@@ -213,20 +198,7 @@ public class MainActivity extends Activity {
 		}
 	}
 
-	private void saveForm() {
-		_display.setGridLayout(_stringFormat);
-		_history.put(_StringId, _stringFormat);
-		JSON.storeObjectFile(_context, "history", _history, false);
-		Log.i("Saved", "Data Saved");
-	}
-	
-	private void getData() {
-		JSON.readStringObject(_context, "history", false);
 
-
-		_display.setGridLayout(_stringFormat);
-		System.out.println(_stringFormat);
-	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

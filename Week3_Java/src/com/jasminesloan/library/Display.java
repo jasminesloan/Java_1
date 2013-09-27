@@ -18,7 +18,7 @@ public class Display extends GridLayout {
 		
 		TextView textLabel = new TextView(_context);
 		_textView = new TextView(_context);
-		textLabel.setText("");
+		textLabel.setText("Joke:");
 		
 		this.addView(textLabel);
 		this.addView(_textView);
